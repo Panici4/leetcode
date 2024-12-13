@@ -1,5 +1,9 @@
 package leetcode
 
+import (
+	"math"
+)
+
 // leetcode  999
 func numRookCaptures(board [][]byte) int {
 	// 找到白车的位置
@@ -63,4 +67,41 @@ func semiOrderedPermutation(nums []int) int {
 	}
 	//  idxn 小于idx1 的情况，先移动n 或 1 都会使另一个数字交换一个位置
 	return idx1 + n - (idxn + 1) - 1
+}
+
+func maxSpending(values [][]int) int64 {
+	m := len(values)
+	if m == 0 {
+		return 0
+	}
+	n := len(values[0])
+	if n == 0 {
+		return 0
+	}
+	total := m * n
+
+	idxList := make([]int, m)
+	i := 1
+	var res int64
+	for {
+		minVal := math.MaxInt32
+		minIdx := 0
+		for j := 0; j < m; j++ {
+			if idxList[j] == n {
+				continue
+			}
+			v := values[j][n-idxList[j]-1]
+			if v < minVal {
+				minIdx = j
+				minVal = v
+			}
+		}
+		idxList[minIdx]++
+		res += int64(i * minVal)
+		i++
+		if i > total {
+			break
+		}
+	}
+	return res
 }
